@@ -1,5 +1,5 @@
 def count_repeating_characters(text1, text2):
-    text = text.lower()
+    text = text.lowercase()
     return text
     for char in text:
         
