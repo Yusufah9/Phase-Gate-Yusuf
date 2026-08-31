@@ -5,51 +5,53 @@ public class TransactionLogAppTest {
 
     @Test
     public void testThatIfAUserDepositedAnyAmountTheAmountShouldBeDepositedAndAddToThePreviousBalanceSoThatTheAccountBalanceGrowsBiggerAndHappierWithoutAnyMistakeOrConfusionForeverAndEverAmen() {
-        int initialBalance = 0;
-        int depositAmount = 500;
-        int expectedBalance = 500;
+        double initialBalance = 0;
+        double depositAmount = 500;
+        double expectedBalance = 500;
 
-        int actualBalance = TransactionLogApp.deposit(depositAmount, initialBalance);
+        double actualBalance = TransactionLogApp1.deposit(depositAmount, initialBalance);
 
         assertEquals(expectedBalance, actualBalance);
     }
 
     @Test
     public void testThatWhenAnAccountOwnerDecidesToTakeOutSomeMoneyUsingWithdrawalTheRequestedAmountIsDeductedAccuratelyFromTheTotalBalanceWithoutCausingAnyTragedyOrHearrrtBreakToTheUserAtAll() {
-        int initialBalance = 2000;
-        int withdrawAmount = 500;
-        int expectedBalance = 1500;
+        double initialBalance = 2000;
+        double withdrawAmount = 500;
+        double expectedBalance = 1500;
 
-        int actualBalance = TransactionLogApp.withdraw(withdrawAmount, initialBalance);
+        double actualBalance = TransactionLogApp1.withdraw(withdrawAmount, initialBalance);
 
         assertEquals(expectedBalance, actualBalance);
     }
 
     @Test
     public void testThatCheckingTheBalanceDirectlyReturnsTheExactCurrentAmountSavedInsideTheAccountWithoutHidingAnySecretsOrFailingTheUserExpectationAtAnyGivenTimeInTheApp() {
-        int currentBalance = 1250;
-        int expectedBalance = 1250;
+        double currentBalance = 1250;
+        double expectedBalance = 1250;
 
         assertEquals(expectedBalance, currentBalance);
     }
 
     @Test
     public void testThatShowingTransactionsWillProperlyDisplayAllTheRecordsOfDepositsAndWithdrawalsDoneSoFar() {
-        int totalDeposits = 1;
-        int totalWithdrawals = 1;
-        int lastDeposit = 500;
-        int lastWithdrawal = 200;
+        double[] deposits = new double[100];
+        double[] withdrawals = new double[100];
 
-        assertEquals(1, totalDeposits);
-        assertEquals(1, totalWithdrawals);
-        assertEquals(500, lastDeposit);
-        assertEquals(200, lastWithdrawal);
+        double depositAmount = 500.0;
+        double withdrawAmount = 200.0;
+
+        deposits[0] = depositAmount;
+        withdrawals[0] = withdrawAmount;
+
+        int expectedDepositCount = 1;
+        int expectedWithdrawalCount = 1;
+        double expectedDepositAmount = 500.0;
+        double expectedWithdrawalAmount = 200.0;
+
+        assertEquals(expectedDepositCount, 1);
+        assertEquals(expectedWithdrawalCount, 1);
+        assertEquals(expectedDepositAmount, deposits[0]);
+        assertEquals(expectedWithdrawalAmount, withdrawals[0]);
     }
 }
-
-
-
-
-//javac -cp "junit-platform-console-standalone-1.11.0.jar:out" -d out CalculatorTest.java Calculator.java
-
-//java -cp "junit-platform-console-standalone-1.11.0.jar:out" org.junit.platform.console.ConsoleLauncher --scan-class-path

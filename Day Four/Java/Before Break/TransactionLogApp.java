@@ -1,53 +1,57 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
-public class TransactionLogApp {
+public class TransactionLogApp1 {
 
-    public static int deposit(int amount, int accountBalance) {
+    public static double deposit(double amount, double accountBalance) {
         if (amount > 0) {
             accountBalance += amount;
-            System.out.println("Deposited: ₦" + amount + " | New Balance: ₦" + accountBalance);
-        } else {
-            System.out.println("Invalid input! Please enter a valid positive amount.");
         }
         return accountBalance;
     }
 
-    public static int withdraw(int amount, int accountBalance) {
+    public static double withdraw(double amount, double accountBalance) {
         if (amount > 0 && accountBalance >= amount) {
             accountBalance -= amount;
-            System.out.println("Withdrew: ₦" + amount + " | New Balance: ₦" + accountBalance);
-        } else if (amount > accountBalance) {
-            System.out.println("Withdrawal failed: insufficient funds");
-        } else {
-            System.out.println("Invalid input! Please enter a valid positive amount.");
         }
         return accountBalance;
     }
 
-    public static void showTransactions(int totalDeposits, int totalWithdrawals, int lastDeposit, int lastWithdrawal) {
-        if (totalDeposits == 0 && totalWithdrawals == 0) {
+    public static void showTransactions(double[] deposits, double[] withdrawals, int depositCount, int withdrawalCount) {
+        if (depositCount == 0 && withdrawalCount == 0) {
             System.out.println("No transactions yet.");
         } else {
             System.out.println("Transactions so far:");
-            if (totalDeposits > 0) {
-                System.out.println("1. Last Deposit: ₦" + lastDeposit);
+            if (depositCount > 0) {
+                System.out.println("Deposits:");
+                int count = 0;
+                while (count < depositCount) {
+                    System.out.println((count + 1) + ". ₦" + deposits[count]);
+                    count++;
+                }
             }
-            if (totalWithdrawals > 0) {
-                System.out.println("2. Last Withdrawal: ₦" + lastWithdrawal);
+            if (withdrawalCount > 0) {
+                System.out.println("Withdrawals:");
+                int count = 0;
+                while (count < withdrawalCount) {
+                    System.out.println((count + 1) + ". ₦" + withdrawals[count]);
+                    count++;
+                }
             }
         }
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int accountBalance = 0;
-        int progress = 1;
+        double accountBalance = 0;
         
-        int totalDeposits = 0;
-        int totalWithdrawals = 0;
-        int lastDeposit = 0;
-        int lastWithdrawal = 0;
-
+        double[] deposits = new double[100];
+        double[] withdrawals = new double[100];
+        int depositCount = 0;
+        int withdrawalCount = 0;
+        int userInput = -1;
+        
+        while(userInput != 0){ 
         System.out.println("Welcome to Transaction Log App");
 
         String options = """
@@ -59,43 +63,52 @@ public class TransactionLogApp {
                 0. Exit
                 """;
 
-        while (progress != 0) {
+         
             System.out.print(options);
             System.out.print("Enter your choice: ");
-            int userInput = scanner.nextInt();
+            userInput = scanner.nextInt();
+            
 
             if (userInput == 1) {
                 System.out.println("Your Account Balance: ₦" + accountBalance);
             } 
             else if (userInput == 2) {
                 System.out.print("Enter your Amount to Deposit: ");
-                int depositAmount = scanner.nextInt();
-                accountBalance = deposit(depositAmount, accountBalance);
+                double depositAmount = scanner.nextDouble();
                 if (depositAmount > 0) {
-                    totalDeposits++;
-                    lastDeposit = depositAmount;
+                    accountBalance = deposit(depositAmount, accountBalance);
+                    deposits[depositCount] = depositAmount;
+                    depositCount++;
+                    System.out.println("Deposited: ₦" + depositAmount + " | New Balance: ₦" + accountBalance);
+                } else {
+                    System.out.println("Invalid input! Please enter a valid positive amount.");
                 }
             } 
             else if (userInput == 3) {
                 System.out.print("Enter your Amount to Withdraw: ");
-                int withdrawAmount = scanner.nextInt();
-                accountBalance = withdraw(withdrawAmount, accountBalance);
-                if (withdrawAmount > 0 && accountBalance >= 0 && withdrawAmount <= accountBalance + withdrawAmount) {
-                    totalWithdrawals++;
-                    lastWithdrawal = withdrawAmount;
+                double withdrawAmount = scanner.nextDouble();
+                if (withdrawAmount > 0 && accountBalance >= withdrawAmount) {
+                    accountBalance = withdraw(withdrawAmount, accountBalance);
+                    withdrawals[withdrawalCount] = withdrawAmount;
+                    withdrawalCount++;
+                    System.out.println("Withdrew: ₦" + withdrawAmount + " | New Balance: ₦" + accountBalance);
+                } else if (withdrawAmount > accountBalance) {
+                    System.out.println("Withdrawal failed: insufficient funds");
+                } else {
+                    System.out.println("Invalid input! Please enter a valid positive amount.");
                 }
             } 
             else if (userInput == 4) {
-                showTransactions(totalDeposits, totalWithdrawals, lastDeposit, lastWithdrawal);
+                showTransactions(deposits, withdrawals, depositCount, withdrawalCount);
             } 
             else if (userInput == 0) {
-                progress = 0;
-                System.out.println("Final Balance: ₦" + accountBalance);
                 System.out.println("Thank you for using Transaction Log App!");
+                break;
             } 
             else {
                 System.out.println("Invalid input! Please choose valid options from the options above.");
             }
         }
+       
     }
 }
